@@ -17,11 +17,14 @@ public class Tickets {
     @Basic
     @Column(name = "data_compra")
     private Date dataCompra;
+    @Basic
+    @Column(name = "dins_camp")
+    private Integer dinsCamp;
     @ManyToOne
-    @JoinColumn(name = "DNI", referencedColumnName = "DNI",insertable = false, updatable = false)
+    @JoinColumn(name = "DNI", referencedColumnName = "DNI", insertable = false, updatable = false)
     private Usuaris usuarisByDni;
     @ManyToOne
-    @JoinColumn(name = "id_partit", referencedColumnName = "id_partit",insertable = false, updatable = false)
+    @JoinColumn(name = "id_partit", referencedColumnName = "id_partit", insertable = false, updatable = false)
     private Partits partitsByIdPartit;
 
     public String getIdTicket() {
@@ -56,6 +59,14 @@ public class Tickets {
         this.dataCompra = dataCompra;
     }
 
+    public Integer getDinsCamp() {
+        return dinsCamp;
+    }
+
+    public void setDinsCamp(Integer dinsCamp) {
+        this.dinsCamp = dinsCamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,6 +78,7 @@ public class Tickets {
         if (dni != null ? !dni.equals(tickets.dni) : tickets.dni != null) return false;
         if (idPartit != null ? !idPartit.equals(tickets.idPartit) : tickets.idPartit != null) return false;
         if (dataCompra != null ? !dataCompra.equals(tickets.dataCompra) : tickets.dataCompra != null) return false;
+        if (dinsCamp != null ? !dinsCamp.equals(tickets.dinsCamp) : tickets.dinsCamp != null) return false;
 
         return true;
     }
@@ -77,6 +89,7 @@ public class Tickets {
         result = 31 * result + (dni != null ? dni.hashCode() : 0);
         result = 31 * result + (idPartit != null ? idPartit.hashCode() : 0);
         result = 31 * result + (dataCompra != null ? dataCompra.hashCode() : 0);
+        result = 31 * result + (dinsCamp != null ? dinsCamp.hashCode() : 0);
         return result;
     }
 
