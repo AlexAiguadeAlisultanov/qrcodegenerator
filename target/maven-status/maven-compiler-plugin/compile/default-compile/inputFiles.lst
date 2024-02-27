@@ -1,0 +1,15 @@
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\QrCodeGeneratorApplication.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\model\Tickets.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\controller\PartitsController.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\service\StripeService.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\model\Partits.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\controller\TicketsController.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\utils\Response.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\service\QRCodeService.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\repository\PartitsRepository.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\controller\PaymentController.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\model\Usuaris.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\controller\UsuarisController.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\repository\TicketsRepository.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\repository\UsuarisRepository.java
+G:\LaSalle\DAM2\Llubes\M6\SpringBoot\QRCodeGeneratorDecoder-main\qrcodegenerator\src\main\java\com\crni99\qrcodegenerator\config\WebConfig.java

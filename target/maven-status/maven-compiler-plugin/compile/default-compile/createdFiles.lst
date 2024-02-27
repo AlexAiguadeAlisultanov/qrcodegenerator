@@ -1,0 +1,15 @@
+com\crni99\qrcodegenerator\model\Partits.class
+com\crni99\qrcodegenerator\model\Tickets.class
+com\crni99\qrcodegenerator\controller\PaymentController.class
+com\crni99\qrcodegenerator\controller\UsuarisController.class
+com\crni99\qrcodegenerator\utils\Response.class
+com\crni99\qrcodegenerator\repository\TicketsRepository.class
+com\crni99\qrcodegenerator\controller\PartitsController.class
+com\crni99\qrcodegenerator\service\QRCodeService.class
+com\crni99\qrcodegenerator\repository\UsuarisRepository.class
+com\crni99\qrcodegenerator\model\Usuaris.class
+com\crni99\qrcodegenerator\controller\TicketsController.class
+com\crni99\qrcodegenerator\repository\PartitsRepository.class
+com\crni99\qrcodegenerator\config\WebConfig.class
+com\crni99\qrcodegenerator\QrCodeGeneratorApplication.class
+com\crni99\qrcodegenerator\service\StripeService.class

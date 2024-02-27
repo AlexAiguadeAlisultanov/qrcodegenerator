@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -35,12 +36,28 @@ public class TicketsController {
 		this.repository = repository;
 	}
 	@GetMapping("/tickets/{idPartit}")
-	public String home(@PathVariable("idPartit") Long idPartit, Model model ,  HttpSession session) {
-		System.out.println("ID del Partido: " + idPartit);
-		model.addAttribute("idPartido", idPartit);
-		String Dni = (String) session.getAttribute("userId");
-		model.addAttribute("dni", Dni);
-		return "index";
+	public String home(@PathVariable("idPartit") int idPartit, Model model, HttpSession session) {
+		System.out.println("ID del Partit: " + idPartit);
+
+		Optional<Partits> optionalPartido = repository.findById(idPartit);
+
+		if (optionalPartido.isPresent()) {
+			Partits partido = optionalPartido.get();
+
+			// Guardar el precio y el nombre del partido en variables de sesión
+			session.setAttribute("precioPartido", partido.getPreu());
+			session.setAttribute("nombrePartido", partido.getNomPartit());
+
+			model.addAttribute("partido", partido);
+			model.addAttribute("idPartido", idPartit);
+
+			String dni = (String) session.getAttribute("userId");
+			model.addAttribute("dni", dni);
+
+			return "index";
+		} else {
+			return "redirect:/error";
+		}
 	}
 	@PostMapping("/generate")
 	public String generateQRCode(@ModelAttribute Tickets tickets, Model model, @RequestParam("idPartit") Integer idPartit, @RequestParam("dni") String dni) {

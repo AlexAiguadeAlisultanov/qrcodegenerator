@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Subscription</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 4 JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Stripe JavaScript Library -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body class="bg-light pt-5">
+
+<!-- Hero section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-12 my-auto mx-auto">
+                <h1>Suscripción</h1>
+                <p class="lead mb-4">
+                    Por favor, complete el formulario a continuación para realizar el pago.
+                </p>
+                <h5 class="mb-2">Elija su plan de pago</h5>
+                <p class="text-muted">
+                    60% de descuento al actualizar al plan anual.
+                </p>
+                <div class="py-2">
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" id="monthly-plan" name="premium-plan" type="radio"
+                               value="monthly-subscription"/>
+                        <label class="custom-control-label" for="monthly-plan">
+                            <strong>Mensual 20 €</strong><br/>
+                            <small class="text-muted">
+                                Pague 20 € cada mes y obtenga acceso a todos los partidos premium.
+                            </small>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio mt-3">
+                        <input checked="" class="custom-control-input" id="annually-plan" name="premium-plan"
+                               type="radio" value="annual-subscription"/>
+                        <label class="custom-control-label" for="annually-plan">
+                            <strong>Anual 100 €</strong>
+                            <span class="badge badge-primary ml-1">60% DE DESCUENTO</span>
+                            <br/>
+                            <small class="text-muted">
+                                Pague 100 € cada año y obtenga acceso a todos los partidos premium.
+                            </small>
+                        </label>
+                    </div>
+                </div>
+                <form action="#" id="payment-form" method="post">
+                    <input id="api-key" type="hidden" th:value="${stripePublicKey}">
+                    <div class="form-group">
+                        <label class="font-weight-medium" for="card-element">
+                            Ingrese la tarjeta de crédito o débito a continuación
+                        </label>
+                        <div class="w-100" id="card-element">
+                            <!-- Un elemento de Stripe se insertará aquí. -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="email" name="email"
+                               placeholder="Dirección de correo electrónico" type="email" required>
+                    </div>
+                    <!-- Se utiliza para mostrar errores de Element. -->
+                    <div class="text-danger w-100" id="card-errors" role="alert"></div>
+                    <div class="form-group pt-2">
+                        <button class="btn btn-primary btn-block" id="submitButton" type="submit">
+                            Pagar con su tarjeta
+                        </button>
+                        <div class="small text-muted mt-2">
+                            Pague de forma segura con Stripe. Al hacer clic en el botón de arriba, acepta
+                            nuestros <a target="_blank" href="#">Términos de servicio</a>,
+                            <a target="_blank" href="#">Privacidad</a> y
+                            <a target="_blank" href="#">Política de reembolso</a>.
+                        </div>
+                    </div>
+                </form>
+                <p class="mt-5 text-muted">
+                    <small>Un proyecto de ejemplo creado por <a th:href="@{https://github.com/GretiCani}"
+                                                                target="_blank">Greti</a>.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript personalizado para manejar la suscripción -->
+<script>
+    $(function () {
+        var API_KEY = $('#api-key').val();
+        // Crear un cliente de Stripe.
+        var stripe = Stripe(API_KEY);
+
+        // Crear una instancia de Elements.
+        var elements = stripe.elements();
+
+        // Crear una instancia del Elemento de tarjeta.
+        var card = elements.create('card');
+
+        // Agregar una instancia del Elemento de tarjeta al <div> `card-element`.
+        card.mount('#card-element');
+
+        // Manejar errores de validación en tiempo real desde el Elemento de tarjeta.
+        card.addEventListener('change', function (event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        // Manejar la presentación del formulario.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Validar el cupón si lo hay
+            var code = $('#coupon').val().trim();
+            if (code.length > 0) {
+                $.post(
+                    "/coupon-validator",
+                    {code: code},
+                    function (data) {
+                        if (data.status) {
+                            handlePayments();
+                        } else {
+                            alert(data.details);
+                        }
+                    }, 'json');
+            } else {
+                handlePayments();
+            }
+        });
+
+        // Manejar la presentación de la tarjeta
+        function handlePayments() {
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    // Informar al usuario si hay un error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Enviar el token a su servidor.
+                    var token = result.token.id;
+                    var plan = $('input[name="premium-plan"]:checked').val();
+                    var email = $('#email').val();
+                    var coupon = $('#coupon').val();
+                    $.post(
+                        "/create-subscription",
+                        {email: email, token: token, plan: plan, coupon: coupon},
+                        function (data) {
+                            alert(data.details);
+                        }, 'json');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
