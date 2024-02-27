@@ -81,7 +81,7 @@
 			<label for="dni" class="form-label">DNI</label>
 			<input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}" disabled />
 			<!-- Add hidden input field for dni -->
-			<input type="hidden" name="dni" th:if="${dni != null}" th:value="${dni}" />
+			<input type="text" name="dni" class="form-control"  th:if="${dni == null}"/>
 			<div class="invalid-feedback">
 				Please provide a valid partido ID.
 			</div>
