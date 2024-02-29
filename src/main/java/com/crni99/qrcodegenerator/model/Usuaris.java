@@ -2,6 +2,7 @@ package com.crni99.qrcodegenerator.model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 public class Usuaris {
@@ -17,6 +18,9 @@ public class Usuaris {
     @Basic
     @Column(name = "password")
     private String password;
+    @Basic
+    @Column(name = "soci")
+    private Integer soci;
     @OneToMany(mappedBy = "usuarisByDni")
     private Collection<Tickets> ticketsByDni;
 
@@ -50,6 +54,14 @@ public class Usuaris {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getSoci() {
+        return soci;
+    }
+
+    public void setSoci(Integer soci) {
+        this.soci = soci;
     }
 
     @Override

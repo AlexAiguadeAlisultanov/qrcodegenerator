@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 public class Partits {
@@ -16,6 +17,9 @@ public class Partits {
     @Basic
     @Column(name = "lloc_partit")
     private String llocPartit;
+    @Basic
+    @Column(name = "preu")
+    private int preu;
     @Basic
     @Column(name = "hora")
     private Time hora;
@@ -47,6 +51,14 @@ public class Partits {
 
     public void setLlocPartit(String llocPartit) {
         this.llocPartit = llocPartit;
+    }
+
+    public int getPreu() {
+        return preu;
+    }
+
+    public void setPreu(int preu) {
+        this.preu = preu;
     }
 
     public Time getHora() {

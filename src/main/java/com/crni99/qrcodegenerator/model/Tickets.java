@@ -2,6 +2,7 @@ package com.crni99.qrcodegenerator.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 public class Tickets {
@@ -20,13 +21,16 @@ public class Tickets {
     @Basic
     @Column(name = "dins_camp")
     private Integer dinsCamp;
+    @Basic
+    @Column(name = "preu")
+    private Integer preu;
     @ManyToOne
     @JoinColumn(name = "DNI", referencedColumnName = "DNI", insertable = false, updatable = false)
     private Usuaris usuarisByDni;
     @ManyToOne
     @JoinColumn(name = "id_partit", referencedColumnName = "id_partit", insertable = false, updatable = false)
-    private Partits partitsByIdPartit;
 
+    private Partits partitsByIdPartit;
     public String getIdTicket() {
         return idTicket;
     }
@@ -65,6 +69,14 @@ public class Tickets {
 
     public void setDinsCamp(Integer dinsCamp) {
         this.dinsCamp = dinsCamp;
+    }
+
+    public Integer getPreu() {
+        return preu;
+    }
+
+    public void setPreu(Integer preu) {
+        this.preu = preu;
     }
 
     @Override
