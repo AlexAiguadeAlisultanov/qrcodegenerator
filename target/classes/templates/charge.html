@@ -25,15 +25,15 @@
                     Entrada d' 1 sol us
                 </h1>
                 <p class="lead mb-4">
-                    Rellena los campos para hacer el pago.
+                    Rellena tots els camps per a poder fer el pagament
                 </p>
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 th:text="${#session.getAttribute('nombrePartido')}"></h5>
-                        <h5 th:text="${#session.getAttribute('precioPartido')} + ' €'"></h5>
+                        <h5 th:text="${#session.getAttribute('precioPartido')/100} + ' €'"></h5>
                     </div>
                 </div>
-                <form action="#" id="payment-form" method="post">
+                <form action="/generate" id="payment-form" method="post">
                     <input id="api-key" type="hidden" th:value="${stripePublicKey}">
                     <div class="form-group">
                         <label class="font-weight-medium" for="card-element">
