@@ -13,51 +13,94 @@
 
     <link href="../static/img/favicon.png" th:href="@{/img/favicon.png}"
           rel="shortcut icon"/>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/originals/45/d6/b5/45d6b57da9ee5b13a583918c64801807.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed; /* Optional: Makes the background fixed while scrolling */
+        }
+
+        /* Set the background-color for the navbar and navbar-nav to your preferred color */
+        .navbar {
+            background-color: #333;
+            width: 100%; /* Set the desired width */
+        }
+
+        /* Adjust other styles as needed */
+        .navbar-brand {
+            /* Example: Set a max-width for the brand to avoid stretching */
+            max-width: 200px; /* Adjust as needed */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Truncate if the text is too long */
+        }
+
+        /* Set the text color to white and make it bold for the menu items */
+        .navbar-nav .nav-link {
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Set the background-color for the table to transparent */
+        tbody {
+            background-color: rgba(255, 255, 255, 0.5); /* Transparent white */
+        }
+
+        /* Set the text color to white for the table header */
+        .thead-dark {
+            color: white;
+        }
+
+        /* Set the background-color for the values in the table to transparent */
+        tbody td {
+            background-color: transparent;
+            color: black; /* Set text color to black for visibility */
+        }
+
+        .mb-4 {
+            color: white;
+        }
+    </style>
+
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="https://mollerussa.lasalle.cat/">La Salle</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <!-- Verificar si hay sesión activa -->
-            <li th:if="${session.userId != null}" class="nav-item active">
-                <a class="nav-link" th:href="@{/mostrarPartits}">Mostrar Partidos</a>
-            </li>
-            <!-- Otros elementos de menú aquí -->
-            <li th:if="${session.userId == null}" class="nav-item">
-                <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
-            </li>
-            <li th:if="${session.userId != null}" class="nav-item">
-                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div class="container" style="max-width: 75%;">
-    <nav class="navbar navbar-expand-lg">
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarNav" aria-controls="navbarNav"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="/mostrarPartits">Partits
-                </a></li>
-                <li class="nav-item"><a class="nav-link" href="/decode">Decode</a></li>
-                <li th:if="${session.userId != null}" class="nav-item">
-                    <form th:action="@{/updateSocio}" method="post">
-                        <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Soci</button>
-                    </form>
+<header id="header">
+    <div class="container" style="max-width: 75%;">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="/mostrarPartits">Inici</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav1" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav1">
+                <div class="navbar-nav">
+                    <li>
+                        <a class="nav-link" href="/mostrarPartits">
+                            <i class="fa-solid fa-trophy"></i> Partits
+                        </a>
+                    </li>
+                    <li th:if="${session.userId != null}" class="nav-item active">
+                        <form th:action="@{/subscription}" method="post">
+                            <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Soci</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/decode">
+                            <i class="fas fa-qrcode"></i> Scanner
+                        </a>
+                    </li>
+                </div>
+                <li th:if="${session.userId == null}" class="nav-item">
+                    <a class="btn btn-outline-light ms-auto" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
                 </li>
-            </ul>
-        </div>
-    </nav>
-</div>
+                <li th:if="${session.userId != null}" class="nav-item">
+                    <a class="btn btn-outline-light ms-auto" th:href="@{/logout}"><i class="fa-solid fa-right-to-bracket"></i>Cerrar sesión</a>
+                </li>
+            </div>
+        </nav>
+    </div>
+</header>
 <div class="container mt-4">
     <h2 class="mb-4">Lista de Partidos</h2>
     <table class="table">
