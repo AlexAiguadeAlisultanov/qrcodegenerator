@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,11 +41,22 @@ public class UsuarisController {
         }
         return "redirect:/login?error"; // Redirige al usuario a la página de inicio de sesión con un mensaje de error
     }
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("usuaris", new Usuaris());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute Usuaris usuaris, Model model) {
+
+        UsuarisRepository.save(usuaris);
+        return "redirect:/login";
+    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Invalida y destruye la sesión
         return "redirect:/login?logout"; // Redirige al usuario a la página de inicio de sesión con un mensaje de cierre de sesión
     }
-
 }

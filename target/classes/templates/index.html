@@ -47,9 +47,6 @@
 </nav>
 <div class="container" style="max-width: 75%;">
 	<nav class="navbar navbar-expand-lg">
-		<a class="navbar-brand" href="#"> <img src="../img/favicon.png"
-											   width="30" height="30"> QR Code Generator
-		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarNav" aria-controls="navbarNav"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -79,11 +76,15 @@
 		<div class="mb-3">
 			<!-- Use a single input field for 'dni' -->
 			<label for="dni" class="form-label">DNI</label>
-			<input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}" disabled />
-			<!-- Add hidden input field for dni -->
-			<input type="text" name="dni" class="form-control"  th:if="${dni == null}"/>
+
+			<!-- Visible input for dni -->
+			<input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}" readonly />
+
+			<!-- Hidden input for dni -->
+			<input type="text" name="dni" class="form-control" th:if="${dni == null}" th:value="${dni}" />
+
 			<div class="invalid-feedback">
-				Please provide a valid partido ID.
+				Please provide a valid DNI.
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary" id="generateQRCode" style="margin-top: 10px;">Insertar</button>
