@@ -1,7 +1,5 @@
 package com.crni99.qrcodegenerator.controller;
 
-import java.io.IOException;
-
 import com.crni99.qrcodegenerator.model.Partits;
 import com.crni99.qrcodegenerator.model.Tickets;
 import com.crni99.qrcodegenerator.model.Usuaris;
@@ -11,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.crni99.qrcodegenerator.service.QRCodeService;
-
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,7 +39,6 @@ public class TicketsController {
 
 		if (optionalPartido.isPresent()) {
 			Partits partido = optionalPartido.get();
-
 			// Guardar el precio y el nombre del partido en variables de sesión
 			session.setAttribute("precioPartido", partido.getPreu()/100); // passem a euros ja que a la db esta en centims
 			session.setAttribute("nombrePartido", partido.getNomPartit());
@@ -89,20 +84,48 @@ public class TicketsController {
 	}
 
 	@PostMapping("/uploadQrCode")
-	public String uploadQrCode(@RequestParam("qrCodeFile") MultipartFile qrCodeFile,
-			RedirectAttributes redirectAttributes) {
-		if (qrCodeFile.isEmpty()) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Please choose file to upload.");
-			return "redirect:/decode";
+	public String uploadQrCode(@RequestParam("qrContent") String qrContent, Model model, RedirectAttributes redirectAttributes) {
+		System.out.println(qrContent);
+
+		boolean qrValido = validarQrCode(qrContent);
+
+		if (qrValido) {
+			model.addAttribute("qrValido", true);
+		} else {
+			model.addAttribute("qrValido", false);
 		}
-		try {
-			String qrContent = qrCodeService.decodeQR(qrCodeFile.getBytes());
-			redirectAttributes.addFlashAttribute("qrContent", qrContent);
-			return "redirect:/decode";
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		return "decode";
+	}
+	private boolean validarQrCode(String qrContent) {
+		LocalDate currentDate = LocalDate.now();
+		Date date = java.sql.Date.valueOf(currentDate);
+
+		String idTicket = qrContent;
+
+		Tickets ticket = ticketsRepository.findByIdTicket(idTicket);
+
+		if (ticket != null) {
+			Partits partits = repository.findById(ticket.getIdPartit()).orElse(null);
+			System.out.println(partits.getDataPartit());
+			System.out.println(currentDate);
+
+			if (partits != null) {
+				if (partits.getDataPartit().equals(date)) {
+					System.out.println("El Partit és avui");
+					return true;
+				} else {
+					System.out.println("El Partit no és avui");
+					System.out.println("Data del partit: " + partits.getDataPartit());
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			System.out.println("Error: Ticket no encontrado");
 		}
-		return "redirect:/decode";
+		return false;
 	}
 
 	@PostMapping("/successfulPayment/{idTicket}")
