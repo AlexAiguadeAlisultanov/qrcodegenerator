@@ -66,8 +66,13 @@ public class TicketsController {
 			tickets.setDataCompra(new Date(System.currentTimeMillis()));
 			tickets.setDinsCamp(0);
 			tickets.setIdPartit(idPartit);
-			String dni = String.valueOf(session.getAttribute("userId"));
-			tickets.setDni(dni);
+			String dniValue = (String) session.getAttribute("dniValue");
+			if (dniValue != null) {
+				tickets.setDni(dniValue);
+			} else {
+				String dni = String.valueOf(session.getAttribute("userId"));
+				tickets.setDni(dni);
+			}
 			String qrCode = qrCodeService.getQRCode(tickets.getIdTicket());
 			model.addAttribute("qrcode", qrCode);
 			ticketsRepository.save(tickets);

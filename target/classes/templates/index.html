@@ -66,9 +66,9 @@
             </div>
         </div>
         <div class="mb-3">
-            <label for="dni" class="form-label" th:if="${dni != null}">DNI</label>
+            <label for="dni" class="form-label">DNI</label>
             <input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}"/>
-            <input type="text" name="dni" class="form-control" th:if="${dni == null}"/>
+            <input type="text" name="dni" class="form-control" id="dniInput" th:if="${dni == null}"/>
             <div class="invalid-feedback">
                 Has de donar un id de partit valid
             </div>
@@ -107,7 +107,12 @@
         </div>
     </th:block>
 </div>
-
+<script>
+    document.getElementById('qrCodeForm').addEventListener('submit', function () {
+        var dniValue = document.getElementById('dniInput').value;
+        sessionStorage.setItem('dniValue', dniValue);
+    });
+</script>
 <script>
     document.getElementById('qrCodeDownload').addEventListener('click',
         function () {
