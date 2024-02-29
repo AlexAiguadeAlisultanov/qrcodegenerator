@@ -51,7 +51,7 @@
                         </label>
                     </div>
                 </div>
-                <form action="#" id="payment-form" method="post">
+                <form action="/updateSocio" id="payment-form" method="post">
                     <input id="api-key" type="hidden" th:value="${stripePublicKey}">
                     <div class="form-group">
                         <label class="font-weight-medium" for="card-element">
@@ -62,8 +62,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input class="form-control" id="email" name="email"
-                               placeholder="Dirección de correo electrónico" type="email" required>
+                        <input class="form-control" id="email" name="email" placeholder="Dirección de correo electrónico" type="email" required>
                     </div>
                     <!-- Se utiliza para mostrar errores de Element. -->
                     <div class="text-danger w-100" id="card-errors" role="alert"></div>
@@ -79,10 +78,6 @@
                         </div>
                     </div>
                 </form>
-                <p class="mt-5 text-muted">
-                    <small>Un proyecto de ejemplo creado por <a th:href="@{https://github.com/GretiCani}"
-                                                                target="_blank">Greti</a>.</small>
-                </p>
             </div>
         </div>
     </div>
