@@ -93,20 +93,26 @@ public class PaymentController {
 	}
 
 	@PostMapping("/create-charge")
-	public @ResponseBody Response createCharge(String email, String token, HttpSession session, Partits partido) {
+	public String createCharge(String email, String token, HttpSession session, Partits partido, Model model) {
 
 		if (token == null) {
-			return new Response(false, "Stripe payment token is missing. please try again later.");
+			model.addAttribute("paymentResult", new Response(false, "Stripe payment token is missing. Please try again later."));
+			return "charge-failure"; // Vista de fallo de pago
 		}
 		String preu = session.getAttribute("precioPartido").toString();
 		String chargeId = stripeService.createCharge(email, token, Integer.parseInt(preu));// 9.99 usd
 
 		if (chargeId == null) {
-			return new Response(false, "An error accurred while trying to charge.");
+			model.addAttribute("paymentResult", new Response(false, "An error occurred while trying to charge."));
+			return "charge-failure"; // Vista de fallo de pago
 		}
 
-		// You may want to store charge id along with order information
+		session.setAttribute("hasPagat", 1);
 
-		return new Response(true, "Success your charge id is " + chargeId);
+		// Puedes almacenar el chargeId junto con otra información si es necesario
+		model.addAttribute("chargeId", chargeId);
+		model.addAttribute("paymentResult", new Response(true, "Success! Your charge id is " + chargeId));
+
+		return "redirect:/index"; // Redirigir a la vista de index
 	}
 }

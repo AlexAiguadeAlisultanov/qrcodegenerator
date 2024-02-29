@@ -57,7 +57,9 @@
             background-color: transparent;
             color: black; /* Set text color to black for visibility */
         }
-
+        label{
+            color: white !important;
+        }
         .mb-4 {
             color: white;
         }
@@ -80,11 +82,6 @@
                             <i class="fa-solid fa-trophy"></i> Partits
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/tickets">a
-                            <i class="fas fa-ticket-alt"></i> Tickets
-                        </a>
-                    </li>
                     <li th:if="${session.userId != null}" class="nav-item active">
                         <form th:action="@{/subscription}" method="post">
                             <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Soci</button>
@@ -97,7 +94,7 @@
                     </li>
                 </div>
                 <li th:if="${session.userId == null}" class="nav-item">
-                    <a class="btn btn-outline-light ms-auto" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
+                    <a class="btn btn-outline-light ms-auto" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>
                 </li>
                 <li th:if="${session.userId != null}" class="nav-item">
                     <a class="btn btn-outline-light ms-auto" th:href="@{/logout}"><i class="fa-solid fa-right-to-bracket"></i>Cerrar sesión</a>
@@ -106,7 +103,6 @@
         </nav>
     </div>
 </header>
-
 <div class="container-sm mt-5" style="max-width: 75%;">
     <form id="qrCodeForm" action="/generate" method="post" class="needs-validation">
         <div class="mb-3">
@@ -128,7 +124,7 @@
         </div>
         <!-- Cambiado a un enlace en lugar de un botón -->
         <td>
-            <div th:if="${session.esSoci == 1}">
+            <div th:if="${session.esSoci == 1 or session.hasPagat == 1}">
                 <!-- El usuario es socio, mostrar el enlace -->
                 <button type="submit" class="btn btn-primary" id="generateQRCode" style="margin-top: 10px;">Generar ticket </button>
             </div>

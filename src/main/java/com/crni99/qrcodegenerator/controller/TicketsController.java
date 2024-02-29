@@ -40,7 +40,7 @@ public class TicketsController {
 		if (optionalPartido.isPresent()) {
 			Partits partido = optionalPartido.get();
 			// Guardar el precio y el nombre del partido en variables de sesión
-			session.setAttribute("precioPartido", partido.getPreu()/100); // passem a euros ja que a la db esta en centims
+			session.setAttribute("precioPartido", partido.getPreu()); // passem a euros ja que a la db esta en centims
 			session.setAttribute("nombrePartido", partido.getNomPartit());
 
 			model.addAttribute("partido", partido);
@@ -62,6 +62,7 @@ public class TicketsController {
 			tickets.setDinsCamp(0);
 			tickets.setIdPartit(idPartit);
 			tickets.setHasPagat(true);
+			session.setAttribute("hasPagat", tickets.getHasPagat());
 			String dniValue = (String) session.getAttribute("dniValue");
 			if (dniValue != null) {
 				tickets.setDni(dniValue);

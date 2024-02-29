@@ -23,6 +23,21 @@ public class UsuarisController {
         }
         return "login"; // Devuelve la vista de inicio de sesión
     }
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+    @PostMapping("/register")
+    public String register(@RequestParam("dni") String dni, @RequestParam("email") String email, @RequestParam("usuari") String usuari, @RequestParam("password") String password, @RequestParam("soci") Integer soci, Model model) {
+        Usuaris usuario = new Usuaris();
+        usuario.setDni(dni);
+        usuario.setEmail(email);
+        usuario.setUsuari(usuari);
+        usuario.setPassword(password);
+        usuario.setSoci(soci);
+        UsuarisRepository.save(usuario);
+        return "redirect:/login";
+    }
 
     @PostMapping("/login")
     public String login(@RequestParam("usuari") String usuari, @RequestParam("password") String password, HttpSession session, Model model) {
