@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.crni99.qrcodegenerator.model.Partits;
 import com.crni99.qrcodegenerator.model.Tickets;
+import com.crni99.qrcodegenerator.model.Usuaris;
 import com.crni99.qrcodegenerator.repository.PartitsRepository;
 import com.crni99.qrcodegenerator.repository.TicketsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import java.util.UUID;
 
 @Controller
 public class TicketsController {
-
 	private final QRCodeService qrCodeService;
 	private final TicketsRepository ticketsRepository;
 	private final PartitsRepository repository;
@@ -45,7 +45,7 @@ public class TicketsController {
 			Partits partido = optionalPartido.get();
 
 			// Guardar el precio y el nombre del partido en variables de sesión
-			session.setAttribute("precioPartido", partido.getPreu());
+			session.setAttribute("precioPartido", partido.getPreu()/100); // passem a euros ja que a la db esta en centims
 			session.setAttribute("nombrePartido", partido.getNomPartit());
 
 			model.addAttribute("partido", partido);
@@ -60,12 +60,13 @@ public class TicketsController {
 		}
 	}
 	@PostMapping("/generate")
-	public String generateQRCode(@ModelAttribute Tickets tickets, Model model, @RequestParam("idPartit") Integer idPartit, @RequestParam("dni") String dni) {
+	public String generateQRCode(@ModelAttribute Tickets tickets, Model model, @RequestParam("idPartit") Integer idPartit, HttpSession session, Usuaris usuario) {
 		try {
 			tickets.setIdTicket(UUID.randomUUID().toString());
 			tickets.setDataCompra(new Date(System.currentTimeMillis()));
 			tickets.setDinsCamp(0);
 			tickets.setIdPartit(idPartit);
+			String dni = String.valueOf(session.getAttribute("userId"));
 			tickets.setDni(dni);
 			String qrCode = qrCodeService.getQRCode(tickets.getIdTicket());
 			model.addAttribute("qrcode", qrCode);
@@ -98,5 +99,19 @@ public class TicketsController {
 		}
 		return "redirect:/decode";
 	}
+
+	@PostMapping("/successfulPayment/{idTicket}")
+	public String successfulPayment(@PathVariable String idTicket, Model model) {
+		// Lógica para manejar el pago exitoso y generar el código QR
+		try {
+			String qrCode = qrCodeService.getQRCode(idTicket);
+			model.addAttribute("qrcode", qrCode);
+			return "success"; // Página de éxito con el código QR
+		} catch (Exception e) {
+			// Manejo de errores si es necesario
+			return "error";
+		}
+	}
+
 
 }

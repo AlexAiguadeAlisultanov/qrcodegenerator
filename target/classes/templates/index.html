@@ -1,86 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-	<title>QR Code Generator / Decoder</title>
-	<link href="../static/img/favicon.png" th:href="@{/img/favicon.png}" rel="shortcut icon"/>
-	<style>
-		.navbar-nav .nav-item .nav-link {
-			color: black !important;
-		}
-	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>QR Code Generator / Decoder</title>
+    <link href="../static/img/favicon.png" th:href="@{/img/favicon.png}" rel="shortcut icon"/>
+    <style>
+        .navbar-nav .nav-item .nav-link {
+            color: black !important;
+        }
+    </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="https://mollerussa.lasalle.cat/">LaSalle</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<div class="collapse navbar-collapse" id="navbarNav">
-		<ul class="navbar-nav ml-auto">
-			<li th:if="${session.userId != null}" class="nav-item active">
-				<a class="nav-link" th:href="@{/mostrarPartits}">Mostrar Partidos</a>
-			</li>
-			<li th:if="${session.userId == null}" class="nav-item">
-				<a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
-			</li>
-			<li th:if="${session.userId != null}" class="nav-item">
-				<a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
-			</li>
-		</ul>
-	</div>
+    <a class="navbar-brand" href="https://mollerussa.lasalle.cat/">LaSalle</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li th:if="${session.userId != null}" class="nav-item active">
+                <a class="nav-link" th:href="@{/mostrarPartits}">Mostrar Partidos</a>
+            </li>
+            <li th:if="${session.userId == null}" class="nav-item">
+                <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
+            </li>
+            <li th:if="${session.userId != null}" class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <div class="container" style="max-width: 75%;">
-	<nav class="navbar navbar-expand-lg">
-		<a class="navbar-brand" href="#">
-			<img src="../img/favicon.png" width="30" height="30"> QR Code Generator
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="/mostrarPartits">Partits</a></li>
-				<li class="nav-item"><a class="nav-link" href="/decode">Decode</a></li>
-			</ul>
-		</div>
-	</nav>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+            <img src="../img/favicon.png" width="30" height="30"> QR Code Generator
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"><a class="nav-link" href="/mostrarPartits">Partits</a></li>
+                <li class="nav-item"><a class="nav-link" href="/decode">Decode</a></li>
+            </ul>
+        </div>
+    </nav>
 </div>
 
 <div class="container-sm mt-5" style="max-width: 75%;">
-	<form id="qrCodeForm" action="/generate" method="post" class="needs-validation">
-		<div class="mb-3">
-			<label for="idPartit" class="form-label">ID del Partido</label>
-			<input type="text" name="idPartit" class="form-control" id="idPartit" autocomplete="off" th:value="${idPartido}" disabled />
-			<input type="hidden" name="idPartit" th:value="${idPartido}" />
-			<div class="invalid-feedback">
-				Please provide a valid partido ID.
-			</div>
-		</div>
-		<div class="mb-3">
-			<label for="dni" class="form-label">DNI</label>
-			<input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}" disabled />
-			<input type="text" name="dni" class="form-control"  th:if="${dni == null}"/>
-			<div class="invalid-feedback">
-				Has de donar un id de partit valid
-			</div>
-		</div>
-		<!-- Cambiado a un enlace en lugar de un botón -->
-		<a href="/charge" class="btn btn-primary" style="margin-top: 10px;">Comprar</a>
-	</form>
+    <form id="qrCodeForm" action="/generate" method="post" class="needs-validation">
+        <div class="mb-3">
+            <label for="idPartit" class="form-label">ID del Partido</label>
+            <input type="text" name="idPartit" class="form-control" id="idPartit" autocomplete="off"
+                   th:value="${idPartido}" disabled/>
+            <input type="hidden" name="idPartit" th:value="${idPartido}"/>
+            <div class="invalid-feedback">
+                Please provide a valid partido ID.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="dni" class="form-label" th:if="${dni != null}">DNI</label>
+            <input type="text" name="dni" class="form-control" id="dni" th:if="${dni != null}" th:value="${dni}"/>
+            <input type="text" name="dni" class="form-control" th:if="${dni == null}"/>
+            <div class="invalid-feedback">
+                Has de donar un id de partit valid
+            </div>
+        </div>
+        <!-- Cambiado a un enlace en lugar de un botón -->
+        <td>
+            <div th:if="${session.esSoci == 1}">
+                <!-- El usuario es socio, mostrar el enlace -->
+                <button type="submit" class="btn btn-primary" id="generateQRCode" style="margin-top: 10px;">Generar ticket </button>
+            </div>
+            <div th:if="${session.esSoci == 0}">
+                <!-- El usuario es socio, mostrar el enlace -->
+                <a th:href="@{/charge}" class="btn btn-warning btn-sm">Comprar ticket</a>
+            </div>
+            <div th:if="${session.esSoci == null}">
+                <!-- El usuario no es socio, redirigir a otra página -->
+                <a th:href="@{/charge}" class="btn btn-warning btn-sm">Comprar ticket</a>
+            </div>
+        </td>
+    </form>
 
-	<th:block th:if="${not #strings.isEmpty(qrcode)}">
-		<!-- Contenido relacionado con el código QR -->
-	</th:block>
+    <th:block th:if="${not #strings.isEmpty(qrcode)}">
+        <div class="mt-5" id="qrCodeContainer">
+            <div>
+                <h3>
+                    Qr Ticket:
+                </h3>
+                <img th:src="${'data:image/png;base64,' + qrcode}"
+                     alt="GeneratedQRCode" class="img-fluid rounded" id="qrCodeImage">
+            </div>
+            <div>
+                <button class="btn btn-primary" id="qrCodeDownload"
+                        style="margin-top: 10px;">Download
+                </button>
+            </div>
+        </div>
+    </th:block>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.16.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('qrCodeDownload').addEventListener('click',
+        function () {
+            var imageElement = document.querySelector('#qrCodeImage');
+            var imageUrl = imageElement.src;
 
+            fetch(imageUrl).then(response => response.blob()).then(blob => {
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'QRCode.jpg';
+                document.body.appendChild(link);
+                link.click();
+            });
+        });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.16.6/dist/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>
 </html>

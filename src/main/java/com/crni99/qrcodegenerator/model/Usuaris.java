@@ -20,7 +20,7 @@ public class Usuaris {
     private String password;
     @Basic
     @Column(name = "soci")
-    private Byte soci;
+    private Integer soci;
     @OneToMany(mappedBy = "usuarisByDni")
     private Collection<Tickets> ticketsByDni;
 
@@ -56,11 +56,11 @@ public class Usuaris {
         this.password = password;
     }
 
-    public Byte getSoci() {
+    public Integer getSoci() {
         return soci;
     }
 
-    public void setSoci(Byte soci) {
+    public void setSoci(Integer soci) {
         this.soci = soci;
     }
 

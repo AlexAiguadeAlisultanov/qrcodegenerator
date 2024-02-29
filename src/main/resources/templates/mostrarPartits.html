@@ -17,7 +17,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Mi Empresa</a>
+    <a class="navbar-brand" href="https://mollerussa.lasalle.cat/">La Salle</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -52,6 +52,11 @@
                 <li class="nav-item active"><a class="nav-link" href="/mostrarPartits">Partits
                 </a></li>
                 <li class="nav-item"><a class="nav-link" href="/decode">Decode</a></li>
+                <li th:if="${session.userId != null}" class="nav-item">
+                    <form th:action="@{/updateSocio}" method="post">
+                        <button type="submit" class="nav-link" style="border: none; background: none; cursor: pointer;">Soci</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>
@@ -66,6 +71,7 @@
             <th scope="col">Lugar</th>
             <th scope="col">Hora</th>
             <th scope="col">Fecha</th>
+            <th scope="col">Precio</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -76,6 +82,7 @@
             <td th:text="${partit.llocPartit}"></td>
             <td th:text="${partit.hora}"></td>
             <td th:text="${#dates.format(partit.dataPartit, 'yyyy-MM-dd')}"></td>
+            <td th:text="${partit.preu/100} + ' €'"></td>
             <td>
                 <a th:href="@{/tickets/{id}(id=${partit.idPartit})}" class="btn btn-info btn-sm">Comprar Ticket</a>
             </td>
@@ -83,8 +90,6 @@
         </tbody>
     </table>
 </div>
-
-
 
 <!-- Agrega la referencia a Bootstrap JS y jQuery (asegúrate de tener estas bibliotecas disponibles) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
