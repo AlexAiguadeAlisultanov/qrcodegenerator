@@ -68,7 +68,28 @@
 
 <script>
     $(function () {
-        // Resto del script...
+        var API_KEY = $('#api-key').val();
+        // Create a Stripe client.
+        var stripe = Stripe(API_KEY);
+
+        // Create an instance of Elements.
+        var elements = stripe.elements();
+
+        // Create an instance of the card Element.
+        var card = elements.create('card');
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.addEventListener('change', function (event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
 
         // Handle form submission.
         var form = document.getElementById('payment-form');
@@ -78,44 +99,26 @@
             handlePayments();
         });
 
-        // Function to generate QR Code
-        function generateQRCode(ticketId) {
-            // Replace this with the actual logic to generate the QR Code
-            var qrCode = qrcode(0, 'H');
-            qrCode.addData(ticketId);
-            qrCode.make();
-            var qrImage = qrCode.createImgTag(5);
-            // Display or save the generated QR Code as needed
-            alert("QR Code generated. Replace this with your logic to display or save: " + qrImage);
+        //handle card submission
+        function handlePayments() {
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    // Inform the user if there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server.
+                    var token = result.token.id;
+                    var email = $('#email').val();
+                    $.post(
+                        "/create-charge",
+                        {email: email, token: token},
+                        function (data) {
+                            alert(data.details);
+                        }, 'json');
+                }
+            });
         }
-
-        // Handle successful payment
-        function handleSuccessfulPayment(ticketId) {
-            // Send the token to your server.
-            var token = result.token.id;
-            var email = $('#email').val();
-            $.post(
-                "/create-charge",
-                {email: email, token: token},
-                function (data) {
-                    alert(data.details);
-                    // Generate QR Code after successful payment
-                    generateQRCode(ticketId);
-                }, 'json');
-        }
-        // function handleSuccessfulPayment(ticketId) {
-        //     // Resto del código...
-        //
-        //     $.post(
-        //         "/create-charge",
-        //         {email: email, token: token},
-        //         function (data) {
-        //             alert(data.details);
-        //             // Redirige a la página de éxito con el código QR
-        //             window.location.href = "/successfulPayment/" + ticketId;
-        //         }, 'json');
-        // }
-
     });
 </script>
 

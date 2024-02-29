@@ -1,5 +1,6 @@
 package com.crni99.qrcodegenerator.controller;
 
+import com.crni99.qrcodegenerator.model.Partits;
 import com.crni99.qrcodegenerator.utils.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stripe.model.Coupon;
 import com.crni99.qrcodegenerator.service.StripeService;
 import com.crni99.qrcodegenerator.controller.PaymentController;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class PaymentController {
@@ -90,13 +93,13 @@ public class PaymentController {
 	}
 
 	@PostMapping("/create-charge")
-	public @ResponseBody Response createCharge(String email, String token) {
+	public @ResponseBody Response createCharge(String email, String token, HttpSession session, Partits partido) {
 
 		if (token == null) {
 			return new Response(false, "Stripe payment token is missing. please try again later.");
 		}
-
-		String chargeId = stripeService.createCharge(email, token, 999);// 9.99 usd
+		String preu = session.getAttribute("precioPartido").toString();
+		String chargeId = stripeService.createCharge(email, token, Integer.parseInt(preu));// 9.99 usd
 
 		if (chargeId == null) {
 			return new Response(false, "An error accurred while trying to charge.");

@@ -111,7 +111,7 @@ public class TicketsController {
 		try {
 			String qrCode = qrCodeService.getQRCode(idTicket);
 			model.addAttribute("qrcode", qrCode);
-			return "success"; // Página de éxito con el código QR
+			return "index"; // Página de éxito con el código QR
 		} catch (Exception e) {
 			// Manejo de errores si es necesario
 			return "error";
