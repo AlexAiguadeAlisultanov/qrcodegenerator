@@ -61,6 +61,7 @@ public class TicketsController {
 			tickets.setDataCompra(new Date(System.currentTimeMillis()));
 			tickets.setDinsCamp(0);
 			tickets.setIdPartit(idPartit);
+			tickets.setHasPagat(true);
 			String dniValue = (String) session.getAttribute("dniValue");
 			if (dniValue != null) {
 				tickets.setDni(dniValue);

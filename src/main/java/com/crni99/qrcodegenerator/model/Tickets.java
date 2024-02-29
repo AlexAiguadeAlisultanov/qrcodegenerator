@@ -22,6 +22,9 @@ public class Tickets {
     @Column(name = "dins_camp")
     private Integer dinsCamp;
     @Basic
+    @Column(name = "hasPagat", nullable = false, columnDefinition = "boolean default false")
+    private boolean hasPagat;
+    @Basic
     @Column(name = "preu")
     private Integer preu;
     @ManyToOne
@@ -77,6 +80,14 @@ public class Tickets {
 
     public void setPreu(Integer preu) {
         this.preu = preu;
+    }
+
+    public Boolean getHasPagat() {
+        return hasPagat;
+    }
+
+    public void setHasPagat(Boolean hasPagat) {
+        this.hasPagat = hasPagat;
     }
 
     @Override
