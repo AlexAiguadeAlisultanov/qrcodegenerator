@@ -102,6 +102,15 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>3.0.4</version>
+				<configuration>
+					<appName>tunombredeappheroku</appName> <!-- Reemplaza esto con el nombre de tu aplicación en Heroku -->
+					<includeTarget>false</includeTarget>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
